@@ -1,0 +1,11 @@
+@startuml
+start
+:Usuario envía email + password;
+if (Credenciales válidas?) then (Sí)
+  :Generar JWT;
+  :Devolver token;
+else (No)
+  :Error de autenticación;
+endif
+stop
+@enduml
