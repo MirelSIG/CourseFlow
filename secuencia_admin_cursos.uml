@@ -1,0 +1,49 @@
+@startuml
+
+title Secuencia - Administracion de Cursos
+
+actor Admin
+participant "Panel Admin" as UI
+participant "API" as API
+participant "CourseService" as COURSE
+database "DB" as DB
+
+Admin -> UI: Accede al panel de cursos
+UI -> API: GET /courses
+API -> COURSE: listarCursos()
+COURSE -> DB: SELECT * FROM courses
+DB --> COURSE: listado cursos
+COURSE --> API: listado cursos
+API --> UI: 200 OK + cursos
+
+opt Crear curso
+  Admin -> UI: Completa formulario
+  UI -> API: POST /courses
+  API -> COURSE: crearCurso(data)
+  COURSE -> DB: INSERT course
+  DB --> COURSE: curso creado
+  COURSE --> API: resultado
+  API --> UI: 201 Created
+end
+
+opt Editar curso
+  Admin -> UI: Modifica datos del curso
+  UI -> API: PUT /courses/{id}
+  API -> COURSE: actualizarCurso(id, data)
+  COURSE -> DB: UPDATE courses
+  DB --> COURSE: curso actualizado
+  COURSE --> API: resultado
+  API --> UI: 200 OK
+end
+
+opt Desactivar curso
+  Admin -> UI: Desactivar curso
+  UI -> API: PATCH /courses/{id}/deactivate
+  API -> COURSE: desactivarCurso(id)
+  COURSE -> DB: UPDATE is_active = false
+  DB --> COURSE: curso desactivado
+  COURSE --> API: resultado
+  API --> UI: 200 OK
+end
+
+@enduml
