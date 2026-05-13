@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#6c3ce1;--purple-dark:#5228c8;--purple-light:#f0ebff;--purple-mid:#e8e0ff;
+  --f5-green:#1a6b4a;--f5-orange:#e8621a;
+  --text:#111827;--muted:#6b7280;--border:#e5e7eb;--bg:#f9f9fb;
+  --white:#fff;--radius:10px;--radius-lg:16px;--radius-xl:22px;
+}
+body{font-family:'Inter',system-ui,sans-serif;font-size:15px;color:var(--text);background:var(--white);line-height:1.5}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+img{display:block;max-width:100%}
+
+/* ========= NAV ========= */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:62px;border-bottom:1px solid var(--border);background:var(--white);position:sticky;top:0;z-index:100}
+.nav-logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:17px;color:var(--text)}
+.nav-logo .ico{width:30px;height:30px;background:var(--purple);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700}
+.nav-center{display:flex;gap:2px}
+.nav-center a{padding:6px 14px;border-radius:20px;font-size:14px;color:var(--muted);text-decoration:none;font-weight:500;transition:all .15s;border:none;background:none;cursor:pointer}
+.nav-center a:hover{color:var(--text);background:var(--bg)}
+.nav-center a.active{color:var(--purple);text-decoration:underline;text-underline-offset:3px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-right .ghost{font-size:14px;font-weight:500;color:var(--text);background:none;border:none;padding:6px 10px}
+.btn-purple{background:var(--purple);color:#fff;border:none;padding:8px 20px;border-radius:22px;font-size:14px;font-weight:600;transition:background .15s}
+.btn-purple:hover{background:var(--purple-dark)}
+.btn-outline-purple{background:#fff;color:var(--purple);border:1.5px solid var(--purple);padding:8px 20px;border-radius:22px;font-size:14px;font-weight:600;transition:all .15s}
+.btn-outline-purple:hover{background:var(--purple-light)}
+.btn-white{background:#fff;color:var(--purple);border:none;padding:10px 28px;border-radius:22px;font-size:15px;font-weight:600;transition:all .15s}
+.btn-white:hover{background:var(--purple-light)}
+.btn-outline-white{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.6);padding:10px 28px;border-radius:22px;font-size:15px;font-weight:600;transition:all .15s}
+.btn-outline-white:hover{background:rgba(255,255,255,.1)}
+.btn-green{background:var(--f5-green);color:#fff;border:none;padding:9px 22px;border-radius:22px;font-size:14px;font-weight:600}
+.btn-green:hover{opacity:.9}
+
+/* ========= VIEWS ========= */
+.view{display:none}
+.view.active{display:block}
+
+/* ========= HERO ========= */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;padding:4rem 2.5rem 3rem;max-width:1100px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--purple-light);color:var(--purple);font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;margin-bottom:1.25rem}
+.hero h1{font-size:40px;font-weight:800;line-height:1.15;margin-bottom:.75rem;color:var(--text)}
+.hero h1 span{color:var(--purple);font-style:italic}
+.hero p{font-size:15px;color:var(--muted);max-width:420px;margin-bottom:1.75rem;line-height:1.65}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.hero-img{border-radius:var(--radius-lg);overflow:hidden;background:linear-gradient(135deg,#1e2d40 0%,#2d4a6b 100%);min-height:280px;display:flex;align-items:center;justify-content:center;position:relative}
+.hero-img-inner{width:100%;padding:2rem;display:flex;flex-direction:column;gap:12px}
+.mock-row{display:flex;gap:10px}
+.mock-card{flex:1;background:rgba(255,255,255,.1);border-radius:10px;padding:.75rem;border:1px solid rgba(255,255,255,.12)}
+.mock-card .mc-tag{font-size:10px;color:rgba(255,255,255,.6);margin-bottom:4px}
+.mock-card .mc-title{font-size:13px;font-weight:600;color:#fff;line-height:1.3}
+.mock-card .mc-bar{height:3px;background:rgba(255,255,255,.15);border-radius:2px;margin-top:8px;overflow:hidden}
+.mock-card .mc-fill{height:100%;border-radius:2px}
+.mock-stats{display:flex;gap:8px}
+.mock-stat{flex:1;background:rgba(255,255,255,.08);border-radius:8px;padding:.5rem .75rem;text-align:center}
+.mock-stat .ms-n{font-size:16px;font-weight:700;color:#fff}
+.mock-stat .ms-l{font-size:10px;color:rgba(255,255,255,.55)}
+
+/* ========= SECTION ========= */
+.section{padding:3rem 2.5rem;max-width:1100px;margin:0 auto}
+.section-sep{border-top:1px solid var(--border)}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.5rem}
+.section-head h2{font-size:22px;font-weight:700}
+.section-head p{font-size:14px;color:var(--muted);margin-top:4px}
+.link-purple{color:var(--purple);font-size:14px;font-weight:500;text-decoration:none;white-space:nowrap}
+.link-purple:hover{text-decoration:underline}
+
+/* ========= CATALOG GRID ========= */
+.catalog-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:1.25rem;align-items:start}
+.card-featured{border-radius:var(--radius-lg);overflow:hidden;position:relative;background:#111827;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end}
+.card-featured-img{position:absolute;inset:0;background:linear-gradient(135deg,#0f1923 0%,#1e3a5f 50%,#2d1b69 100%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card-featured-img .code-mock{font-family:monospace;font-size:11px;color:rgba(255,255,255,.15);padding:1rem;line-height:1.8;user-select:none}
+.card-featured-overlay{position:relative;z-index:1;padding:1.5rem;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 100%);padding-top:3rem}
+.badge-trend{display:inline-block;background:var(--purple);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:4px;margin-bottom:.5rem;letter-spacing:.05em}
+.card-featured h3{font-size:20px;font-weight:700;color:#fff;margin-bottom:.4rem}
+.card-featured p{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:.75rem}
+.card-featured-meta{display:flex;gap:1rem;font-size:12px;color:rgba(255,255,255,.6)}
+.catalog-side{display:flex;flex-direction:column;gap:1rem}
+.card-side{border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;background:#fff;transition:box-shadow .2s;cursor:pointer}
+.card-side:hover{box-shadow:0 4px 18px rgba(0,0,0,.07)}
+.cs-area{font-size:11px;color:var(--purple);font-weight:600;margin-bottom:.4rem}
+.cs-title{font-size:16px;font-weight:700;margin-bottom:.6rem;color:var(--text)}
+.cs-foot{display:flex;justify-content:space-between;align-items:center}
+.cs-instructor{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.cs-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff}
+.badge-pop{font-size:10px;font-weight:700;background:#d4edda;color:#155724;padding:3px 9px;border-radius:4px;letter-spacing:.04em}
+.badge-new{font-size:10px;font-weight:700;background:#cce5ff;color:#004085;padding:3px 9px;border-radius:4px;letter-spacing:.04em}
+.badge-soon{font-size:10px;font-weight:700;background:#fff3cd;color:#856404;padding:3px 9px;border-radius:4px}
+
+/* ========= COURSE CARDS GRID ========= */
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.25rem}
+.course-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:#fff;transition:box-shadow .2s}
+.course-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.cc-top{padding:1.1rem 1.25rem;background:linear-gradient(135deg,#1a2d1f,#2d4a35);position:relative;min-height:80px}
+.cc-top .area-tag{font-size:10px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.cc-top h3{font-size:14px;font-weight:700;color:#fff;line-height:1.35;padding-right:52px}
+.cc-top .status-chip{position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.s-open{background:#d4edda;color:#155724}
+.s-soon{background:#fff3cd;color:#856404}
+.s-closed{background:#f8d7da;color:#721c24}
+.cc-body{padding:1rem 1.25rem}
+.cc-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:.75rem}
+.cc-meta{display:flex;flex-direction:column;gap:4px;margin-bottom:.75rem}
+.cc-meta span{font-size:12px;color:var(--muted)}
+.progress-wrap{margin-bottom:.5rem}
+.progress-bar{height:4px;background:#e5e7eb;border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--purple);border-radius:2px}
+.progress-label{font-size:11px;color:var(--muted);margin-top:3px}
+.cc-foot{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1.25rem;border-top:1px solid var(--border);background:var(--bg)}
+.spots-txt{font-size:12px;color:var(--muted)}
+.spots-txt strong{color:var(--f5-green)}
+
+/* ========= SEARCH ========= */
+.search-row{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.search-row input{flex:1;min-width:180px;padding:9px 16px;border:1px solid var(--border);border-radius:22px;font-size:14px;outline:none;color:var(--text)}
+.search-row input:focus{border-color:var(--purple)}
+.search-row select{padding:9px 16px;border:1px solid var(--border);border-radius:22px;font-size:14px;background:#fff;outline:none;color:var(--text)}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.pill{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:#fff;font-size:13px;cursor:pointer;color:var(--muted);transition:all .15s}
+.pill.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+
+/* ========= TESTIMONIALS ========= */
+.testi-bg{background:var(--bg);padding:3rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.testi-inner{max-width:1100px;margin:0 auto;padding:0 2.5rem}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:1.5rem}
+.testi-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
+.stars{color:#f59e0b;font-size:14px;margin-bottom:.75rem;letter-spacing:2px}
+.testi-card p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:1rem;font-style:italic}
+.testi-user{display:flex;align-items:center;gap:8px}
+.testi-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.testi-name{font-size:13px;font-weight:600}
+.testi-role{font-size:12px;color:var(--muted)}
+
+/* ========= CTA BANNER ========= */
+.cta-banner{background:var(--purple);padding:3.5rem 2.5rem;text-align:center}
+.cta-banner h2{font-size:28px;font-weight:800;color:#fff;margin-bottom:.75rem}
+.cta-banner p{font-size:15px;color:rgba(255,255,255,.8);max-width:500px;margin:0 auto 1.75rem}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ========= FOOTER ========= */
+.footer{background:#111827;color:#e5e7eb;padding:2.5rem 2.5rem 1.5rem}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:2rem;margin-bottom:2rem}
+.footer-brand .logo{font-size:16px;font-weight:700;color:#fff;margin-bottom:.4rem;display:flex;align-items:center;gap:7px}
+.footer-brand .logo .ico{width:26px;height:26px;background:var(--purple);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.footer-brand p{font-size:12px;color:#9ca3af;line-height:1.6}
+.footer-col h4{font-size:13px;font-weight:600;color:#fff;margin-bottom:.75rem}
+.footer-col a{display:block;font-size:13px;color:#9ca3af;text-decoration:none;margin-bottom:.4rem;transition:color .15s}
+.footer-col a:hover{color:#e5e7eb}
+.footer-bottom{border-top:1px solid #374151;padding-top:1.25rem;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#6b7280}
+
+/* ========= MY APPS VIEW ========= */
+.page-header{padding:2rem 2.5rem 0;max-width:1100px;margin:0 auto}
+.page-header h1{font-size:24px;font-weight:700;margin-bottom:.25rem}
+.page-header p{font-size:14px;color:var(--muted)}
+.page-body{padding:1.5rem 2.5rem;max-width:1100px;margin:0 auto}
+.app-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1rem;background:#fff}
+.app-card-top{display:flex;justify-content:space-between;align-items:center;padding:.875rem 1.25rem;background:var(--bg);border-bottom:1px solid var(--border)}
+.app-card-top h4{font-size:15px;font-weight:600}
+.app-card-body{padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.app-info{display:flex;gap:1.5rem;flex-wrap:wrap}
+.app-info span{font-size:13px;color:var(--muted)}
+.status-chip{font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;display:inline-block}
+.sc-pending{background:#fff3cd;color:#856404}
+.sc-accepted{background:#d4edda;color:#155724}
+.sc-waiting{background:#cce5ff;color:#004085}
+.sc-rejected{background:#f8d7da;color:#721c24}
+.sc-cancelled{background:#e2e3e5;color:#383d41}
+.sc-noshow{background:#fce8d0;color:#7d3a02}
+
+/* ========= ADMIN ========= */
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 62px)}
+.admin-sidebar{background:#111827;padding:1.5rem 0}
+.sb-section{margin-bottom:.5rem}
+.sb-label{font-size:11px;font-weight:600;color:#6b7280;letter-spacing:.08em;padding:.5rem 1.25rem;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:8px;padding:.625rem 1.25rem;font-size:14px;color:#d1d5db;cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.sb-item:hover{background:#1f2937;color:#f9fafb}
+.sb-item.active{background:var(--purple);color:#fff}
+.sb-item .sb-ico{font-size:16px;opacity:.8}
+.admin-main{padding:2rem;background:var(--bg);overflow-x:hidden}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
+.stat-box .sn{font-size:26px;font-weight:700;color:var(--purple)}
+.stat-box .sl{font-size:13px;color:var(--muted);margin-top:2px}
+.stat-box.orange .sn{color:var(--f5-orange)}
+.stat-box.green .sn{color:var(--f5-green)}
+.admin-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem}
+.admin-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.admin-card-head h2{font-size:16px;font-weight:700}
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:var(--bg);padding:10px 14px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+tbody td{padding:10px 14px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafafa}
+.act-btns{display:flex;gap:5px;flex-wrap:wrap}
+.act-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:#fff;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--text)}
+.act-btn:hover{background:var(--bg)}
+.act-btn.accept{border-color:#c3e6cb;color:#155724}.act-btn.accept:hover{background:#d4edda}
+.act-btn.reject{border-color:#f5c6cb;color:#721c24}.act-btn.reject:hover{background:#f8d7da}
+.act-btn.wait{border-color:#b8daff;color:#004085}.act-btn.wait:hover{background:#cce5ff}
+.act-btn.del{color:#dc3545}.act-btn.del:hover{background:#f8d7da;border-color:#f5c6cb}
+
+/* ========= MODAL ========= */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:var(--radius-xl);width:min(560px,94vw);max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.modal-head h2{font-size:17px;font-weight:700}
+.modal-close{background:none;border:none;font-size:22px;color:var(--muted);line-height:1;cursor:pointer}
+.modal-body{padding:1.5rem}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.04em;text-transform:uppercase}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;outline:none;background:#fff;color:var(--text)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,60,225,.08)}
+.field textarea{resize:vertical;min-height:90px}
+.field-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+.btn-modal-cancel{padding:8px 18px;border-radius:22px;border:1px solid var(--border);background:#fff;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer}
+.btn-modal-cancel:hover{background:var(--bg)}
+
+/* ========= CALENDAR ========= */
+.gantt-wrap{overflow-x:auto}
+.gantt-grid{min-width:640px;font-size:12px}
+.gantt-header{display:grid;gap:0;margin-bottom:6px;color:var(--muted);font-weight:500}
+.gantt-row{display:grid;align-items:center;margin-bottom:6px}
+.gantt-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:500;padding-right:8px;color:var(--text)}
+.gantt-bar{border-radius:20px;padding:5px 12px;font-size:11px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+
+/* ========= TOAST ========= */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#111827;color:#fff;padding:.75rem 1.25rem;border-radius:var(--radius-lg);font-size:14px;z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ========= AUTH ========= */
+.auth-page{min-height:calc(100vh - 62px);display:flex;align-items:center;justify-content:center;background:var(--bg);padding:2rem}
+.auth-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius-xl);padding:2.5rem;width:min(420px,100%);box-shadow:0 8px 32px rgba(0,0,0,.06)}
+.auth-logo{text-align:center;margin-bottom:2rem}
+.auth-logo .ico{width:52px;height:52px;background:var(--purple);border-radius:14px;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff}
+.auth-logo h2{font-size:20px;font-weight:700;margin-bottom:.25rem}
+.auth-logo p{font-size:13px;color:var(--muted)}
+.auth-tabs{display:flex;gap:0;background:var(--bg);border-radius:22px;padding:3px;margin-bottom:1.5rem}
+.auth-tabs button{flex:1;padding:8px;border:none;background:none;border-radius:20px;font-size:14px;font-weight:500;color:var(--muted);transition:all .2s}
+.auth-tabs button.active{background:#fff;color:var(--purple);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.auth-form{display:none}
+.auth-form.active{display:block}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="ico">F5</div>
+    CourseFlow
+  </div>
+  <div class="nav-center">
+    <a class="active" onclick="showView('home')">Catálogo</a>
+    <a onclick="showView('myapps')">Mis solicitudes</a>
+    <a onclick="showView('admin')">Administración</a>
+  </div>
+  <div class="nav-right">
+    <button class="ghost" onclick="showView('auth')">Iniciar sesión</button>
+    <button class="btn-purple" onclick="showView('auth')">Acceder</button>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ======================================================
+     VIEW: HOME
+====================================================== -->
+<div class="view active" id="view-home">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="hero-badge">✦ Plataforma de formación inclusiva</div>
+      <h1>Impulsa tu<br><span>Talento Digital</span></h1>
+      <p>Bootcamps y talleres gratuitos diseñados para abrir rutas reales al empleo tecnológico. Formación inclusiva con acompañamiento real.</p>
+      <div class="hero-btns">
+        <button class="btn-purple" style="padding:11px 26px;font-size:15px" onclick="scrollTo('#catalogo')">Ver cursos</button>
+        <button class="btn-outline-purple" style="padding:11px 22px;font-size:15px" onclick="showView('auth')">▷ &nbsp;Cómo funciona</button>
+      </div>
+    </div>
+    <div class="hero-img">
+      <div class="hero-img-inner">
+        <div class="mock-stats">
+          <div class="mock-stat"><div class="ms-n">+1850</div><div class="ms-l">Egresados/as</div></div>
+          <div class="mock-stat"><div class="ms-n">63%</div><div class="ms-l">Tasa de éxito</div></div>
+          <div class="mock-stat"><div class="ms-n">12</div><div class="ms-l">Cursos activos</div></div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-card"><div class="mc-tag">DESARROLLO WEB</div><div class="mc-title">Bootcamp Fullstack JS</div><div class="mc-bar"><div class="mc-fill" style="width:80%;background:#6c3ce1"></div></div></div>
+          <div class="mock-card"><div class="mc-tag">DATOS & IA</div><div class="mc-title">Python & Machine Learning</div><div class="mc-bar"><div class="mc-fill" style="width:55%;background:#e8621a"></div></div></div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-card"><div class="mc-tag">UX/UI</div><div class="mc-title">Diseño con Figma</div><div class="mc-bar"><div class="mc-fill" style="width:100%;background:#e8621a"></div></div></div>
+          <div class="mock-card"><div class="mc-tag">SEGURIDAD</div><div class="mc-title">Ciberseguridad Esencial</div><div class="mc-bar"><div class="mc-fill" style="width:40%;background:#1a6b4a"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATALOG FEATURED -->
+  <div class="section section-sep" id="catalogo">
+    <div class="section-head">
+      <div>
+        <h2>Catálogo de formaciones</h2>
+        <p>Rutas de aprendizaje para carreras tecnológicas con salida real al mercado</p>
+      </div>
+      <a class="link-purple" onclick="showView('catalog')">Ver todo el catálogo →</a>
+    </div>
+    <div class="catalog-layout">
+      <div class="card-featured" onclick="openApply(1)" style="cursor:pointer">
+        <div class="card-featured-img">
+          <div class="code-mock">const api = new CourseFlowAPI();<br>await api.connect();<br>// Building inclusive tech<br>function learnToCode(person) {<br>&nbsp;&nbsp;return person.potential * ∞<br>}</div>
+        </div>
+        <div class="card-featured-overlay">
+          <div class="badge-trend">DESTACADO</div>
+          <h3>Bootcamp Fullstack JavaScript 2025</h3>
+          <p>Domina HTML, CSS, JavaScript, Node.js y React con proyectos reales en equipo.</p>
+          <div class="card-featured-meta">
+            <span>👤 Equipo docente F5</span>
+            <span>⏱ 3 meses · 300h</span>
+            <span>🗓 Sep 2025</span>
+          </div>
+        </div>
+      </div>
+      <div class="catalog-side">
+        <div class="card-side" onclick="openApply(2)">
+          <div class="cs-area">Datos & IA</div>
+          <div class="cs-title">Python & Ciencia de Datos</div>
+          <div class="cs-foot">
+            <div class="cs-instructor"><div class="cs-avatar" style="background:#6c3ce1">EQ</div>Equipo F5</div>
+            <span class="badge-pop">POPULAR</span>
+          </div>
+        </div>
+        <div class="card-side" onclick="openApply(5)">
+          <div class="cs-area">Desarrollo Web</div>
+          <div class="cs-title">React & Vue.js Avanzado</div>
+          <div class="cs-foot">
+            <div class="cs-instructor"><div class="cs-avatar" style="background:#1a6b4a">EQ</div>Equipo F5</div>
+            <span class="badge-new">NUEVO</span>
+          </div>
+        </div>
+        <div class="card-side" onclick="openApply(6)">
+          <div class="cs-area">Datos & IA</div>
+          <div class="cs-title">Inteligencia Artificial Aplicada</div>
+          <div class="cs-foot">
+            <div class="cs-instructor"><div class="cs-avatar" style="background:#e8621a">EQ</div>Equipo F5</div>
+            <span class="badge-soon">PRÓXIMO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIOS -->
+  <div class="testi-bg">
+    <div class="testi-inner">
+      <div class="section-head">
+        <div><h2>Lo que dicen nuestros/as egresados/as</h2></div>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p>"CourseFlow me permitió organizarme muchísimo mejor. Ver el estado de mi solicitud en tiempo real me quitó la ansiedad de no saber qué pasaba."</p>
+          <div class="testi-user"><div class="testi-avatar" style="background:#6c3ce1">AG</div><div><div class="testi-name">Ana García</div><div class="testi-role">Desarrolladora Frontend</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p>"Gracias al bootcamp de F5 conseguí mi primer empleo tech en 4 meses. La plataforma fue clave para gestionar todo el proceso sin perderme nada."</p>
+          <div class="testi-user"><div class="testi-avatar" style="background:#e8621a">MB</div><div><div class="testi-name">Moussa Benali</div><div class="testi-role">Ingeniero de Software</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★☆</div>
+          <p>"La inscripción fue muy sencilla y el equipo me avisó puntualmente de cada cambio en mi candidatura. Una experiencia completamente diferente."</p>
+          <div class="testi-user"><div class="testi-avatar" style="background:#1a6b4a">FT</div><div><div class="testi-name">Fátima Torres</div><div class="testi-role">UX Designer</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <h2>¿Lista/o para dar el salto digital?</h2>
+    <p>Únete a más de 1.850 personas que ya han transformado su trayectoria profesional con Somos F5. Plazas limitadas y gratuitas.</p>
+    <div class="cta-btns">
+      <button class="btn-white" onclick="showView('catalog')">Ver todos los cursos</button>
+      <button class="btn-outline-white" onclick="showView('auth')">Crear mi cuenta</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><div class="ico">F5</div>CourseFlow</div>
+          <p>Plataforma de gestión de formaciones de la Fundación Somos F5. Tecnología inclusiva para todas y todos.</p>
+        </div>
+        <div class="footer-col"><h4>Plataforma</h4><a>Catálogo de cursos</a><a>Mis solicitudes</a><a>Cómo funciona</a></div>
+        <div class="footer-col"><h4>Fundación</h4><a>Conócenos</a><a>Empresas partners</a><a>Contacto</a></div>
+        <div class="footer-col"><h4>Soporte</h4><a>Preguntas frecuentes</a><a>Política de privacidad</a><a>Cookies</a></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Fundación Somos F5 · CourseFlow</span>
+        <span>Formación tecnológica inclusiva y gratuita</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ======================================================
+     VIEW: CATALOG (all courses)
+====================================================== -->
+<div class="view" id="view-catalog">
+  <div class="section" style="padding-top:2rem">
+    <div class="section-head" style="margin-bottom:1rem">
+      <div><h2>Todos los cursos</h2><p style="font-size:14px;color:var(--muted)">Formaciones gratuitas e inclusivas de Somos F5</p></div>
+    </div>
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="🔍  Buscar cursos..." oninput="filterCourses()"/>
+      <select id="catFilter" onchange="filterCourses()"><option value="">Todas las áreas</option><option>Desarrollo Web</option><option>Datos & IA</option><option>Ciberseguridad</option><option>UX/UI</option></select>
+      <select id="stateFilter" onchange="filterCourses()"><option value="">Todos los estados</option><option>Abierto</option><option>Próximamente</option><option>Cerrado</option></select>
+    </div>
+    <div class="courses-grid" id="coursesGrid"></div>
+  </div>
+</div>
+
+<!-- ======================================================
+     VIEW: MY APPS
+====================================================== -->
+<div class="view" id="view-myapps">
+  <div class="page-header">
+    <h1>Mis solicitudes</h1>
+    <p>Consulta y gestiona tus inscripciones a los cursos de Somos F5</p>
+  </div>
+  <div class="page-body">
+    <div class="pills">
+      <div class="pill active" onclick="filterApps(this,'')">Todas</div>
+      <div class="pill" onclick="filterApps(this,'pending')">Pendiente</div>
+      <div class="pill" onclick="filterApps(this,'accepted')">Aceptada</div>
+      <div class="pill" onclick="filterApps(this,'waiting')">Lista de espera</div>
+      <div class="pill" onclick="filterApps(this,'rejected')">Rechazada</div>
+      <div class="pill" onclick="filterApps(this,'cancelled')">Cancelada</div>
+      <div class="pill" onclick="filterApps(this,'noshow')">No presentado</div>
+    </div>
+    <div id="appsList"></div>
+  </div>
+</div>
+
+<!-- ======================================================
+     VIEW: ADMIN
+====================================================== -->
+<div class="view" id="view-admin">
+  <div class="admin-layout">
+    <div class="admin-sidebar">
+      <div class="sb-section">
+        <div class="sb-label">General</div>
+        <button class="sb-item active" onclick="adminTab(this,'tab-dashboard')"><span class="sb-ico">📊</span>Dashboard</button>
+        <button class="sb-item" onclick="adminTab(this,'tab-courses')"><span class="sb-ico">📚</span>Cursos</button>
+        <button class="sb-item" onclick="adminTab(this,'tab-requests')"><span class="sb-ico">📋</span>Solicitudes</button>
+        <button class="sb-item" onclick="adminTab(this,'tab-calendar')"><span class="sb-ico">🗓</span>Cronograma</button>
+      </div>
+    </div>
+    <div class="admin-main">
+
+      <!-- DASHBOARD -->
+      <div id="tab-dashboard">
+        <div style="margin-bottom:1.5rem"><h2 style="font-size:20px;font-weight:700">Panel de administración</h2><p style="font-size:14px;color:var(--muted)">Resumen general de CourseFlow · Somos F5</p></div>
+        <div class="stats-row">
+          <div class="stat-box"><div class="sn">6</div><div class="sl">Cursos activos</div></div>
+          <div class="stat-box orange"><div class="sn">14</div><div class="sl">Solicitudes pendientes</div></div>
+          <div class="stat-box green"><div class="sn">87</div><div class="sl">Participantes aceptados</div></div>
+          <div class="stat-box"><div class="sn">63%</div><div class="sl">Tasa de éxito</div></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card-head"><h2>Solicitudes recientes</h2><button class="btn-purple" style="font-size:13px;padding:6px 16px" onclick="adminTab(document.querySelector('.sb-item:nth-child(4)'),'tab-requests')">Ver todas →</button></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Usuario</th><th>Curso</th><th>Fecha</th><th>Estado</th><th>Acción</th></tr></thead>
+            <tbody id="recentReqTable"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- COURSES TAB -->
+      <div id="tab-courses" style="display:none">
+        <div class="admin-card">
+          <div class="admin-card-head">
+            <h2>Gestión de cursos</h2>
+            <button class="btn-purple" style="font-size:13px;padding:7px 18px" onclick="openModal('modalCourse')">+ Nuevo curso</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Nombre</th><th>Área</th><th>Inicio</th><th>Plazas</th><th>Estado</th><th>Solicitudes</th><th>Acciones</th></tr></thead>
+            <tbody id="adminCoursesTable"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- REQUESTS TAB -->
+      <div id="tab-requests" style="display:none">
+        <div class="admin-card">
+          <div class="admin-card-head">
+            <h2>Gestión de solicitudes</h2>
+            <select id="reqCourseFilter" onchange="renderRequests()" style="padding:7px 12px;border:1px solid var(--border);border-radius:22px;font-size:13px;background:#fff;outline:none">
+              <option value="">Todos los cursos</option>
+            </select>
+          </div>
+          <div class="pills" id="reqPills">
+            <div class="pill active" onclick="filterReqs(this,'')">Todas</div>
+            <div class="pill" onclick="filterReqs(this,'pending')">Pendientes</div>
+            <div class="pill" onclick="filterReqs(this,'accepted')">Aceptadas</div>
+            <div class="pill" onclick="filterReqs(this,'waiting')">Espera</div>
+            <div class="pill" onclick="filterReqs(this,'rejected')">Rechazadas</div>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Usuario</th><th>Curso</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody id="reqTable"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- CALENDAR TAB -->
+      <div id="tab-calendar" style="display:none">
+        <div class="admin-card">
+          <div class="admin-card-head"><h2>Cronograma de cursos</h2></div>
+          <div class="gantt-wrap" id="ganttWrap"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+     VIEW: AUTH
+====================================================== -->
+<div class="view" id="view-auth">
+  <div class="auth-page">
+    <div class="auth-box">
+      <div class="auth-logo">
+        <div class="ico">F5</div>
+        <h2>CourseFlow</h2>
+        <p>Plataforma de formación · Somos F5</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="active" onclick="authTab(this,'login-form')">Iniciar sesión</button>
+        <button onclick="authTab(this,'reg-form')">Registrarse</button>
+      </div>
+      <div class="auth-form active" id="login-form">
+        <div class="field"><label>Correo electrónico</label><input type="email" placeholder="tu@email.com"/></div>
+        <div class="field"><label>Contraseña</label><input type="password" placeholder="••••••••"/></div>
+        <button class="btn-purple" style="width:100%;padding:10px;margin:.5rem 0" onclick="loginAs('user')">Entrar como usuario/a</button>
+        <button class="btn-green" style="width:100%;padding:10px" onclick="loginAs('admin')">Entrar como administrador/a</button>
+      </div>
+      <div class="auth-form" id="reg-form">
+        <div class="field"><label>Nombre completo</label><input type="text" placeholder="Tu nombre"/></div>
+        <div class="field"><label>Correo electrónico</label><input type="email" placeholder="tu@email.com"/></div>
+        <div class="field-2">
+          <div class="field"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"/></div>
+          <div class="field"><label>Confirmar</label><input type="password" placeholder="Repite"/></div>
+        </div>
+        <button class="btn-purple" style="width:100%;padding:10px;margin-top:.5rem" onclick="loginAs('user')">Crear cuenta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL APPLY -->
+<div class="modal-overlay" id="modalApply">
+  <div class="modal">
+    <div class="modal-head"><h2 id="applyTitle">Solicitar plaza</h2><button class="modal-close" onclick="closeModal('modalApply')">×</button></div>
+    <div class="modal-body">
+      <div id="applyInfo" style="background:var(--purple-light);border-radius:var(--radius);padding:1rem;margin-bottom:1rem;font-size:14px;color:#3b1f8a;border-left:3px solid var(--purple)"></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:1rem">El equipo de Somos F5 revisará tu solicitud y te avisará por correo electrónico.</p>
+      <div class="field"><label>¿Por qué quieres participar?</label><textarea placeholder="Cuéntanos tu motivación y qué esperas aprender..."></textarea></div>
+      <div class="field"><label>Situación laboral</label><select><option>Desempleado/a</option><option>Empleado/a en búsqueda de cambio</option><option>Estudiante</option><option>Otro</option></select></div>
+    </div>
+    <div class="modal-foot"><button class="btn-modal-cancel" onclick="closeModal('modalApply')">Cancelar</button><button class="btn-purple" style="padding:8px 22px;border-radius:22px;border:none;font-size:14px;font-weight:600" onclick="submitApp()">Enviar solicitud</button></div>
+  </div>
+</div>
+
+<!-- MODAL COURSE -->
+<div class="modal-overlay" id="modalCourse">
+  <div class="modal">
+    <div class="modal-head"><h2>Nuevo curso</h2><button class="modal-close" onclick="closeModal('modalCourse')">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Nombre del curso</label><input type="text" placeholder="Ej: Bootcamp Fullstack JavaScript"/></div>
+      <div class="field"><label>Área</label><select><option>Desarrollo Web</option><option>Datos & IA</option><option>Ciberseguridad</option><option>UX/UI</option></select></div>
+      <div class="field"><label>Descripción</label><textarea placeholder="Objetivos, metodología, a quién va dirigido..."></textarea></div>
+      <div class="field-2">
+        <div class="field"><label>Fecha inicio</label><input type="date"/></div>
+        <div class="field"><label>Fecha fin</label><input type="date"/></div>
+      </div>
+      <div class="field-2">
+        <div class="field"><label>Plazas objetivo</label><input type="number" placeholder="20"/></div>
+        <div class="field"><label>Margen sobre-reserva</label><input type="number" placeholder="5"/></div>
+      </div>
+      <div class="field"><label>Estado de visibilidad</label><select><option>Activo</option><option>Próximamente</option><option>Inactivo</option></select></div>
+    </div>
+    <div class="modal-foot"><button class="btn-modal-cancel" onclick="closeModal('modalCourse')">Cancelar</button><button class="btn-purple" style="padding:8px 22px;border-radius:22px;border:none;font-size:14px;font-weight:600" onclick="saveCourse()">Guardar curso</button></div>
+  </div>
+</div>
+
+<script>
+const courses=[
+  {id:1,name:'Bootcamp Fullstack JavaScript',area:'Desarrollo Web',desc:'Aprende HTML, CSS, JavaScript, Node.js y React desde cero. Proyecto final en equipo con metodología ágil.',start:'2025-09-15',end:'2025-12-15',capacity:20,enrolled:16,status:'Abierto',requests:12},
+  {id:2,name:'Python & Ciencia de Datos',area:'Datos & IA',desc:'Fundamentos de Python, análisis con Pandas, visualización de datos y Machine Learning básico.',start:'2025-10-01',end:'2026-01-31',capacity:18,enrolled:10,status:'Abierto',requests:9},
+  {id:3,name:'Ciberseguridad Esencial',area:'Ciberseguridad',desc:'Principios de seguridad, redes, hacking ético y respuesta a incidentes en entornos reales.',start:'2025-11-10',end:'2026-02-28',capacity:15,enrolled:0,status:'Próximamente',requests:7},
+  {id:4,name:'Diseño UX/UI con Figma',area:'UX/UI',desc:'Investigación de usuarios, wireframing, prototipado y design systems con proyectos reales.',start:'2025-09-20',end:'2025-11-30',capacity:16,enrolled:16,status:'Cerrado',requests:22},
+  {id:5,name:'React & Vue.js Avanzado',area:'Desarrollo Web',desc:'Componentes, estado global, testing y buenas prácticas en proyectos de escala real.',start:'2026-01-15',end:'2026-04-15',capacity:20,enrolled:4,status:'Próximamente',requests:5},
+  {id:6,name:'Inteligencia Artificial Aplicada',area:'Datos & IA',desc:'LLMs, APIs de IA, prompt engineering y casos de uso reales en empresas.',start:'2026-02-01',end:'2026-05-01',capacity:25,enrolled:0,status:'Próximamente',requests:3},
+];
+const applications=[
+  {id:1,courseId:1,courseName:'Bootcamp Fullstack JavaScript',date:'2025-08-20',status:'accepted'},
+  {id:2,courseId:2,courseName:'Python & Ciencia de Datos',date:'2025-08-25',status:'pending'},
+  {id:3,courseId:4,courseName:'Diseño UX/UI con Figma',date:'2025-07-10',status:'rejected'},
+  {id:4,courseId:3,courseName:'Ciberseguridad Esencial',date:'2025-08-28',status:'waiting'},
+];
+const allRequests=[
+  {id:1,user:'Ana García',email:'ana@email.com',courseId:1,course:'Bootcamp Fullstack JS',date:'2025-08-20',status:'accepted'},
+  {id:2,user:'Luis Martínez',email:'luis@email.com',courseId:1,course:'Bootcamp Fullstack JS',date:'2025-08-21',status:'pending'},
+  {id:3,user:'Fátima Benali',email:'fatima@email.com',courseId:1,course:'Bootcamp Fullstack JS',date:'2025-08-22',status:'waiting'},
+  {id:4,user:'Carlos Ruiz',email:'carlos@email.com',courseId:2,course:'Python & Ciencia de Datos',date:'2025-08-23',status:'pending'},
+  {id:5,user:'Sara López',email:'sara@email.com',courseId:2,course:'Python & Ciencia de Datos',date:'2025-08-24',status:'rejected'},
+  {id:6,user:'Moussa Diallo',email:'moussa@email.com',courseId:3,course:'Ciberseguridad Esencial',date:'2025-08-25',status:'pending'},
+  {id:7,user:'Elena Torres',email:'elena@email.com',courseId:4,course:'UX/UI con Figma',date:'2025-07-05',status:'accepted'},
+  {id:8,user:'Iván Sousa',email:'ivan@email.com',courseId:4,course:'UX/UI con Figma',date:'2025-07-06',status:'noshow'},
+];
+const statusLabels={pending:'Pendiente',accepted:'Aceptada',waiting:'Lista de espera',rejected:'Rechazada',cancelled:'Cancelada',noshow:'No presentado'};
+const statusClass={pending:'sc-pending',accepted:'sc-accepted',waiting:'sc-waiting',rejected:'sc-rejected',cancelled:'sc-cancelled',noshow:'sc-noshow'};
+const barColors=['#6c3ce1','#e8621a','#1a6b4a','#2563eb','#7c3aed','#059669'];
+let currentApplyCourse=null;
+let reqStatusFilter='';
+const adminTabs=['tab-dashboard','tab-courses','tab-requests','tab-calendar'];
+
+function showView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.nav-center a').forEach(a=>a.classList.remove('active'));
+  const map={home:0,catalog:1,myapps:2,admin:2};
+  if(v==='home'||v==='catalog') document.querySelectorAll('.nav-center a')[0].classList.add('active');
+  if(v==='myapps') document.querySelectorAll('.nav-center a')[1].classList.add('active');
+  if(v==='admin') document.querySelectorAll('.nav-center a')[2].classList.add('active');
+  if(v==='catalog'){renderCourses(courses);}
+  if(v==='myapps'){renderApps('');}
+  if(v==='admin'){renderAdminCourses();renderRecentReqs();renderRequests();renderGantt();populateCourseFilter();}
+}
+
+function filterCourses(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const cat=document.getElementById('catFilter').value;
+  const st=document.getElementById('stateFilter').value;
+  renderCourses(courses.filter(c=>(!q||c.name.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q))&&(!cat||c.area===cat)&&(!st||c.status===st)));
+}
+
+function renderCourses(list){
+  document.getElementById('coursesGrid').innerHTML=list.map(c=>{
+    const pct=Math.round(c.enrolled/c.capacity*100);
+    const applied=applications.some(a=>a.courseId===c.id);
+    const chip=c.status==='Abierto'?'s-open':c.status==='Próximamente'?'s-soon':'s-closed';
+    return`<div class="course-card">
+      <div class="cc-top"><div class="area-tag">${c.area}</div><h3>${c.name}</h3><span class="status-chip ${chip}">${c.status}</span></div>
+      <div class="cc-body">
+        <p class="cc-desc">${c.desc}</p>
+        <div class="cc-meta"><span>📅 ${fmtD(c.start)} → ${fmtD(c.end)}</span><span>👥 ${c.enrolled} / ${c.capacity} plazas</span></div>
+        <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-label">${pct}% ocupado · ${c.capacity-c.enrolled} disponibles</div></div>
+      </div>
+      <div class="cc-foot">
+        <span class="spots-txt">Quedan <strong>${c.capacity-c.enrolled}</strong> plazas</span>
+        ${c.status==='Cerrado'?`<span style="font-size:12px;color:var(--muted)">Cerrado</span>`:applied?`<span class="status-chip sc-pending">Ya solicitado</span>`:`<button class="btn-purple" style="font-size:13px;padding:6px 16px" onclick="openApply(${c.id})">Solicitar plaza</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openApply(id){
+  currentApplyCourse=courses.find(c=>c.id===id);
+  if(!currentApplyCourse)return;
+  document.getElementById('applyTitle').textContent='Solicitar plaza · '+currentApplyCourse.name;
+  document.getElementById('applyInfo').innerHTML=`<strong>${currentApplyCourse.name}</strong><br>📅 ${fmtD(currentApplyCourse.start)} al ${fmtD(currentApplyCourse.end)} &nbsp;·&nbsp; 👥 ${currentApplyCourse.capacity-currentApplyCourse.enrolled} plazas disponibles`;
+  openModal('modalApply');
+}
+
+function submitApp(){
+  closeModal('modalApply');
+  applications.push({id:Date.now(),courseId:currentApplyCourse.id,courseName:currentApplyCourse.name,date:new Date().toISOString().slice(0,10),status:'pending'});
+  showToast('✓ Solicitud enviada correctamente. Te avisaremos pronto.');
+}
+
+function renderApps(filter){
+  const list=filter?applications.filter(a=>a.status===filter):applications;
+  const el=document.getElementById('appsList');
+  if(!list.length){el.innerHTML='<p style="color:var(--muted);font-size:14px;padding:1rem 0">No hay solicitudes en esta categoría.</p>';return;}
+  el.innerHTML=list.map(a=>`<div class="app-card">
+    <div class="app-card-top"><h4>${a.courseName}</h4><span class="status-chip ${statusClass[a.status]}">${statusLabels[a.status]}</span></div>
+    <div class="app-card-body">
+      <div class="app-info">
+        <span>📅 Solicitado: ${fmtD(a.date)}</span>
+        ${a.status==='accepted'?'<span style="color:#155724">✓ ¡Enhorabuena! Estás admitido/a</span>':''}
+        ${a.status==='waiting'?'<span style="color:#004085">En lista de espera. Te avisaremos ante bajas.</span>':''}
+        ${a.status==='rejected'?'<span style="color:#721c24">No admitido/a en este ciclo.</span>':''}
+      </div>
+      ${a.status==='pending'||a.status==='waiting'?`<button class="btn-modal-cancel" style="font-size:13px" onclick="cancelApp(${a.id})">Cancelar solicitud</button>`:''}
+    </div>
+  </div>`).join('');
+}
+
+function cancelApp(id){const a=applications.find(x=>x.id===id);if(a){a.status='cancelled';renderApps('');showToast('Solicitud cancelada.');}}
+function filterApps(el,val){document.querySelectorAll('#view-myapps .pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');renderApps(val);}
+
+function renderAdminCourses(){
+  document.getElementById('adminCoursesTable').innerHTML=courses.map(c=>{
+    const chip=c.status==='Abierto'?'sc-accepted':c.status==='Próximamente'?'sc-waiting':'sc-rejected';
+    return`<tr><td><strong>${c.name}</strong></td><td style="color:var(--muted)">${c.area}</td><td>${fmtD(c.start)}</td><td>${c.enrolled}/${c.capacity}</td><td><span class="status-chip ${chip}">${c.status}</span></td><td><strong style="color:var(--f5-orange)">${c.requests}</strong></td><td><div class="act-btns"><button class="act-btn" onclick="showToast('Editor de curso abierto')">Editar</button><button class="act-btn del" onclick="showToast('Curso eliminado')">Eliminar</button></div></td></tr>`;
+  }).join('');
+}
+
+function renderRecentReqs(){
+  const recent=allRequests.slice(0,5);
+  document.getElementById('recentReqTable').innerHTML=recent.map(r=>`<tr>
+    <td><strong>${r.user}</strong><div style="font-size:11px;color:var(--muted)">${r.email}</div></td>
+    <td style="font-size:13px">${r.course}</td>
+    <td style="font-size:13px">${fmtD(r.date)}</td>
+    <td><span class="status-chip ${statusClass[r.status]}">${statusLabels[r.status]}</span></td>
+    <td><div class="act-btns">${r.status==='pending'?`<button class="act-btn accept" onclick="changeReqStatus(${r.id},'accepted');renderRecentReqs()">Aceptar</button><button class="act-btn reject" onclick="changeReqStatus(${r.id},'rejected');renderRecentReqs()">Rechazar</button>`:''}</div></td>
+  </tr>`).join('');
+}
+
+function populateCourseFilter(){
+  document.getElementById('reqCourseFilter').innerHTML='<option value="">Todos los cursos</option>'+courses.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function renderRequests(){
+  const cf=document.getElementById('reqCourseFilter')?.value||'';
+  let list=cf?allRequests.filter(r=>r.courseId==cf):allRequests;
+  if(reqStatusFilter)list=list.filter(r=>r.status===reqStatusFilter);
+  document.getElementById('reqTable').innerHTML=list.map(r=>`<tr>
+    <td><strong>${r.user}</strong><div style="font-size:11px;color:var(--muted)">${r.email}</div></td>
+    <td style="font-size:13px">${r.course}</td>
+    <td style="font-size:13px">${fmtD(r.date)}</td>
+    <td><span class="status-chip ${statusClass[r.status]}">${statusLabels[r.status]}</span></td>
+    <td><div class="act-btns">
+      ${r.status==='pending'||r.status==='waiting'?`<button class="act-btn accept" onclick="changeReqStatus(${r.id},'accepted')">Aceptar</button><button class="act-btn wait" onclick="changeReqStatus(${r.id},'waiting')">Espera</button><button class="act-btn reject" onclick="changeReqStatus(${r.id},'rejected')">Rechazar</button>`:''}
+      <button class="act-btn del" onclick="changeReqStatus(${r.id},'deleted')">Eliminar</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function changeReqStatus(id,st){
+  if(st==='deleted'){const i=allRequests.findIndex(r=>r.id===id);if(i>-1)allRequests.splice(i,1);}
+  else{const r=allRequests.find(r=>r.id===id);if(r)r.status=st;}
+  renderRequests();
+  showToast({accepted:'✓ Candidato/a aceptado/a.',waiting:'Movido/a a lista de espera.',rejected:'Solicitud rechazada.',deleted:'Solicitud eliminada.'}[st]||'Estado actualizado.');
+}
+
+function filterReqs(el,val){
+  document.querySelectorAll('#reqPills .pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');reqStatusFilter=val;renderRequests();
+}
+
+function renderGantt(){
+  const months=['Sep 25','Oct 25','Nov 25','Dic 25','Ene 26','Feb 26','Mar 26','Abr 26','May 26'];
+  const n=months.length;
+  const w=document.getElementById('ganttWrap');
+  const cols=`160px repeat(${n},1fr)`;
+  let html=`<div class="gantt-grid"><div class="gantt-header" style="grid-template-columns:${cols};gap:0;margin-bottom:8px"><div></div>${months.map(m=>`<div style="text-align:center;padding:4px 2px;font-size:11px;color:var(--muted);font-weight:500">${m}</div>`).join('')}</div>`;
+  courses.forEach((c,i)=>{
+    const s=mIdx(c.start,months),e=Math.min(mIdx(c.end,months),n-1);
+    const span=Math.max(1,e-s+1);
+    html+=`<div class="gantt-row" style="grid-template-columns:${cols};margin-bottom:7px">
+      <div class="gantt-name" title="${c.name}" style="font-size:12px">${c.name}</div>
+      ${s>0?`<div style="grid-column:span ${s}"></div>`:''}
+      <div style="grid-column:span ${span}"><div class="gantt-bar" style="background:${barColors[i%barColors.length]}">${c.area}</div></div>
+      ${n-e-1>0?`<div style="grid-column:span ${n-e-1}"></div>`:''}
+    </div>`;
+  });
+  html+='</div>';
+  w.innerHTML=html;
+}
+
+function mIdx(dateStr,months){
+  const d=new Date(dateStr+'T00:00:00');
+  const yr=d.getFullYear().toString().slice(2);
+  const mo=d.toLocaleString('es',{month:'short'}).replace('.','').slice(0,3);
+  const key=`${mo[0].toUpperCase()+mo.slice(1)} ${yr}`;
+  const idx=months.findIndex(m=>m.toLowerCase().startsWith(mo.toLowerCase()));
+  return Math.max(0,Math.min(idx<0?0:idx,months.length-1));
+}
+
+function adminTab(btn,id){
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  adminTabs.forEach(t=>document.getElementById(t).style.display='none');
+  document.getElementById(id).style.display='block';
+}
+
+function authTab(btn,id){
+  document.querySelectorAll('.auth-tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.auth-form').forEach(f=>f.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function loginAs(role){
+  document.querySelector('.nav-right .ghost').textContent=role==='admin'?'María Gómez (Admin)':'Ana García';
+  showView('home');
+  showToast(role==='admin'?'Sesión como administradora iniciada':'Bienvenida, Ana García');
+}
+
+function saveCourse(){closeModal('modalCourse');showToast('✓ Curso guardado correctamente.');}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+function fmtD(s){return new Date(s+'T00:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});}
+
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+</script>
+</body>
+</html>
