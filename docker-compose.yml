@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: courseflow_db
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U courseflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: courseflow
+      POSTGRES_PASSWORD: courseflow
+      POSTGRES_DB: courseflow_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - courseflow_net
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: courseflow_backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg2://courseflow:courseflow@db:5432/courseflow_db
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    networks:
+      - courseflow_net:latest
+    container_name: courseflow_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+      PGADMIN_CONFIG_COOKIE_SAMESITE: "Lax"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - courseflow_net
+
+networks:
+  courseflow_net:
+
+volumes:
+  postgres_data:
