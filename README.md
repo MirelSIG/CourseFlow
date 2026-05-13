@@ -12,53 +12,60 @@ Está construido con:
 La estructura está adaptada a las necesidades del bootcamp y a la organización real del equipo.
 ---
 2. Estructura del proyecto
-Esta es la estructura real del backend:
-backend/
+Esta es la estructura actual del repositorio backend:
+
+```text
+CourseFlow_Backend/
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── config.py
+│   ├── alembic/
+│   │   └── env_1.py
+│   ├── api/
+│   │   ├── deps.py
+│   │   └── v1/
+│   │       ├── routes_auth.py
+│   │       ├── routes_users.py
+│   │       ├── routes_courses.py
+│   │       ├── routes_applications.py
+│   │       └── routes_waiting_list.py
+│   ├── core/
+│   │   ├── config.py
+│   │   └── security.py
+│   ├── db/
+│   │   ├── base.py
+│   │   └── session.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │   ├── course.py
+│   │   ├── application.py
+│   │   └── waiting_list.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── user_schema.py
+│   │   ├── course_schema.py
+│   │   ├── auth_schema.py
+│   │   └── application_schema.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── courses.py
+│   │   └── applications.py
+│   └── utils/
+│       ├── __init__.py
+│       └── decorators.py
+├── tests/
+│   └── test_health.py
+├── docs/
+├── project/
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
-├── app
-│   ├── __init__.py
-│   ├── alembic
-│   │   └── env_1.py
-│   ├── api
-│   │   ├── deps.py
-│   │   └── v1
-│   │       ├── routes_applications.py
-│   │       ├── routes_auth.py
-│   │       ├── routes_courses.py
-│   │       ├── routes_users.py
-│   │       └── routes_waiting_list.py
-│   ├── config.py
-│   ├── core
-│   │   ├── config.py
-│   │   └── security.py
-│   ├── db
-│   │   ├── base.py
-│   │   └── session.py
-│   ├── main.py
-│   ├── models
-│   │   ├── __init__.py
-│   │   ├── application.py
-│   │   ├── course.py
-│   │   ├── user.py
-│   │   └── waiting_list.py
-│   ├── routes
-│   │   ├── __init__.py
-│   │   ├── applications.py
-│   │   ├── auth.py
-│   │   └── courses.py
-│   ├── schemas
-│   │   ├── __init__.py
-│   │   ├── application_schema.py
-│   │   ├── auth_schema.py
-│   │   ├── course_schema.py
-│   │   └── user_schema.py
-│   └── utils
-│       ├── __init__.py
-│       └── decorators.py
-└── tests
-    └── test_health.py
+├── README.md
+└── .env.example
+```
 
 3. Explicación de cada carpeta
 `app/main.py`
