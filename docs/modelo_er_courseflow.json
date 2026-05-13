@@ -1,0 +1,410 @@
+{
+  "tables": [
+    {
+      "id": "usuarios",
+      "name": "usuarios",
+      "fields": [
+        {
+          "id": "id_usuario",
+          "name": "id_usuario",
+          "type": "INT",
+          "primaryKey": true,
+          "autoIncrement": true,
+          "notNull": true
+        },
+        {
+          "id": "nombre",
+          "name": "nombre",
+          "type": "VARCHAR(255)",
+          "notNull": true
+        },
+        {
+          "id": "email",
+          "name": "email",
+          "type": "VARCHAR(255)",
+          "notNull": true,
+          "unique": true
+        },
+        {
+          "id": "contraseña",
+          "name": "contraseña",
+          "type": "VARCHAR(255)",
+          "notNull": true
+        },
+        {
+          "id": "rol",
+          "name": "rol",
+          "type": "ENUM('usuario','administrador')",
+          "notNull": true,
+          "default": "usuario"
+        },
+        {
+          "id": "estado",
+          "name": "estado",
+          "type": "ENUM('activo','inactivo')",
+          "notNull": true,
+          "default": "activo"
+        },
+        {
+          "id": "fecha_creacion",
+          "name": "fecha_creacion",
+          "type": "TIMESTAMP",
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ]
+    },
+    {
+      "id": "categorias",
+      "name": "categorias",
+      "fields": [
+        {
+          "id": "id_categoria",
+          "name": "id_categoria",
+          "type": "INT",
+          "primaryKey": true,
+          "autoIncrement": true,
+          "notNull": true
+        },
+        {
+          "id": "nombre",
+          "name": "nombre",
+          "type": "VARCHAR(100)",
+          "notNull": true,
+          "unique": true
+        },
+        {
+          "id": "descripcion",
+          "name": "descripcion",
+          "type": "TEXT"
+        },
+        {
+          "id": "activo",
+          "name": "activo",
+          "type": "BOOLEAN",
+          "notNull": true,
+          "default": true
+        },
+        {
+          "id": "fecha_creacion",
+          "name": "fecha_creacion",
+          "type": "TIMESTAMP",
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ]
+    },
+    {
+      "id": "cursos",
+      "name": "cursos",
+      "fields": [
+        {
+          "id": "id_curso",
+          "name": "id_curso",
+          "type": "INT",
+          "primaryKey": true,
+          "autoIncrement": true,
+          "notNull": true
+        },
+        {
+          "id": "id_categoria",
+          "name": "id_categoria",
+          "type": "INT",
+          "notNull": true,
+          "foreignKey": "categorias.id_categoria"
+        },
+        {
+          "id": "nombre",
+          "name": "nombre",
+          "type": "VARCHAR(255)",
+          "notNull": true
+        },
+        {
+          "id": "descripcion",
+          "name": "descripcion",
+          "type": "TEXT"
+        },
+        {
+          "id": "fecha_inicio",
+          "name": "fecha_inicio",
+          "type": "DATE",
+          "notNull": true
+        },
+        {
+          "id": "fecha_fin",
+          "name": "fecha_fin",
+          "type": "DATE",
+          "notNull": true
+        },
+        {
+          "id": "capacidad",
+          "name": "capacidad",
+          "type": "INT",
+          "notNull": true
+        },
+        {
+          "id": "capacidad_adicional",
+          "name": "capacidad_adicional",
+          "type": "INT",
+          "notNull": true,
+          "default": 0
+        },
+        {
+          "id": "estado",
+          "name": "estado",
+          "type": "ENUM('activo','inactivo','en_curso','finalizado')",
+          "notNull": true,
+          "default": "activo"
+        },
+        {
+          "id": "visibilidad",
+          "name": "visibilidad",
+          "type": "ENUM('publica','privada')",
+          "notNull": true,
+          "default": "publica"
+        },
+        {
+          "id": "fecha_creacion",
+          "name": "fecha_creacion",
+          "type": "TIMESTAMP",
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ]
+    },
+    {
+      "id": "solicitudes",
+      "name": "solicitudes",
+      "fields": [
+        {
+          "id": "id_solicitud",
+          "name": "id_solicitud",
+          "type": "INT",
+          "primaryKey": true,
+          "autoIncrement": true,
+          "notNull": true
+        },
+        {
+          "id": "id_usuario",
+          "name": "id_usuario",
+          "type": "INT",
+          "notNull": true,
+          "foreignKey": "usuarios.id_usuario"
+        },
+        {
+          "id": "id_curso",
+          "name": "id_curso",
+          "type": "INT",
+          "notNull": true,
+          "foreignKey": "cursos.id_curso"
+        },
+        {
+          "id": "estado",
+          "name": "estado",
+          "type": "ENUM('pendiente','aceptado','rechazado','cancelado','no_presentado')",
+          "notNull": true,
+          "default": "pendiente"
+        },
+        {
+          "id": "fecha_solicitud",
+          "name": "fecha_solicitud",
+          "type": "TIMESTAMP",
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "id": "fecha_respuesta",
+          "name": "fecha_respuesta",
+          "type": "TIMESTAMP"
+        },
+        {
+          "id": "comentarios",
+          "name": "comentarios",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "lista_espera",
+      "name": "lista_espera",
+      "fields": [
+        {
+          "id": "id_espera",
+          "name": "id_espera",
+          "type": "INT",
+          "primaryKey": true,
+          "autoIncrement": true,
+          "notNull": true
+        },
+        {
+          "id": "id_usuario",
+          "name": "id_usuario",
+          "type": "INT",
+          "notNull": true,
+          "foreignKey": "usuarios.id_usuario"
+        },
+        {
+          "id": "id_curso",
+          "name": "id_curso",
+          "type": "INT",
+          "notNull": true,
+          "foreignKey": "cursos.id_curso"
+        },
+        {
+          "id": "id_solicitud",
+          "name": "id_solicitud",
+          "type": "INT",
+          "notNull": true,
+          "foreignKey": "solicitudes.id_solicitud"
+        },
+        {
+          "id": "posicion",
+          "name": "posicion",
+          "type": "INT",
+          "notNull": true
+        },
+        {
+          "id": "fecha_inscripcion",
+          "name": "fecha_inscripcion",
+          "type": "TIMESTAMP",
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "id": "estado",
+          "name": "estado",
+          "type": "ENUM('en_espera','promovido','rechazado')",
+          "notNull": true,
+          "default": "en_espera"
+        },
+        {
+          "id": "fecha_promocion",
+          "name": "fecha_promocion",
+          "type": "TIMESTAMP"
+        }
+      ]
+    },
+    {
+      "id": "auditoria",
+      "name": "auditoria",
+      "fields": [
+        {
+          "id": "id_auditoria",
+          "name": "id_auditoria",
+          "type": "INT",
+          "primaryKey": true,
+          "autoIncrement": true,
+          "notNull": true
+        },
+        {
+          "id": "tabla",
+          "name": "tabla",
+          "type": "VARCHAR(100)",
+          "notNull": true
+        },
+        {
+          "id": "operacion",
+          "name": "operacion",
+          "type": "ENUM('INSERT','UPDATE','DELETE')",
+          "notNull": true
+        },
+        {
+          "id": "id_usuario",
+          "name": "id_usuario",
+          "type": "INT",
+          "foreignKey": "usuarios.id_usuario"
+        },
+        {
+          "id": "datos_anteriores",
+          "name": "datos_anteriores",
+          "type": "JSON"
+        },
+        {
+          "id": "datos_nuevos",
+          "name": "datos_nuevos",
+          "type": "JSON"
+        },
+        {
+          "id": "fecha_operacion",
+          "name": "fecha_operacion",
+          "type": "TIMESTAMP",
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "rel_usuarios_solicitudes",
+      "startTableId": "usuarios",
+      "endTableId": "solicitudes",
+      "startFieldId": "id_usuario",
+      "endFieldId": "id_usuario",
+      "cardinality": "one-to-many",
+      "label": "realiza"
+    },
+    {
+      "id": "rel_categorias_cursos",
+      "startTableId": "categorias",
+      "endTableId": "cursos",
+      "startFieldId": "id_categoria",
+      "endFieldId": "id_categoria",
+      "cardinality": "one-to-many",
+      "label": "clasifica"
+    },
+    {
+      "id": "rel_cursos_solicitudes",
+      "startTableId": "cursos",
+      "endTableId": "solicitudes",
+      "startFieldId": "id_curso",
+      "endFieldId": "id_curso",
+      "cardinality": "one-to-many",
+      "label": "recibe"
+    },
+    {
+      "id": "rel_usuarios_lista_espera",
+      "startTableId": "usuarios",
+      "endTableId": "lista_espera",
+      "startFieldId": "id_usuario",
+      "endFieldId": "id_usuario",
+      "cardinality": "one-to-many",
+      "label": "espera"
+    },
+    {
+      "id": "rel_cursos_lista_espera",
+      "startTableId": "cursos",
+      "endTableId": "lista_espera",
+      "startFieldId": "id_curso",
+      "endFieldId": "id_curso",
+      "cardinality": "one-to-many",
+      "label": "tiene"
+    },
+    {
+      "id": "rel_solicitudes_lista_espera",
+      "startTableId": "solicitudes",
+      "endTableId": "lista_espera",
+      "startFieldId": "id_solicitud",
+      "endFieldId": "id_solicitud",
+      "cardinality": "one-to-many",
+      "label": "registra"
+    },
+    {
+      "id": "rel_usuarios_auditoria",
+      "startTableId": "usuarios",
+      "endTableId": "auditoria",
+      "startFieldId": "id_usuario",
+      "endFieldId": "id_usuario",
+      "cardinality": "one-to-many",
+      "label": "ejecuta"
+    }
+  ],
+  "metadata": {
+    "title": "CourseFlow - Modelo ER",
+    "description": "Modelo de base de datos para plataforma de gestión de cursos, categorías y solicitudes",
+    "version": "1.1",
+    "database": "PostgreSQL",
+    "author": "Equipo F5",
+    "createdAt": "2026-05-13"
+  }
+}
