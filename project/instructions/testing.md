@@ -1,31 +1,34 @@
-# Instrucciones para testing
+# Instrucciones para testing (Backend - CourseFlow)
 
 ## Principios
-*   **Mínimo de ejecución:**: El proyecto debe contar con al menos 5 tests que midan diferentes contextos de ejecución.
+*   **Cobertura mínima:**:El proyecto debe superar el 70% de cobertura en rutas y modelos para garantizar estabilidad.
 
-*   **Unitarios con el código:**: Los tests unitarios se escriben junto al archivo que prueban para facilitar el mantenimiento.
+*   **Aislamiento con Rollback:**: Cada test debe ejecutarse de forma aislada, utilizando transacciones con rollback o recreando la base de datos para no compartir estado entre ejecuciones.
 
-*   **Nomenclatura clara**: Usa el sufijo `.test.js` (o .`test.js`)para identificar los archivos de prueba.
+*   **Nomenclatura clara**: Usa el prefijo `test_` para identificar los archivos de prueba (ej: `test_auth.py`).
 
-## Estructura de Carpetas
+## Tests Unitarios y de Integración
 
 ### Tests Unitarios
-Siguiendo la modularización de Vue 3, los tests de componentes y composables se ubican en su respectiva carpeta dentro de `src/.`
+La estructura de pruebas de CourseFlow sigue las mejores prácticas de Pytest para backend en Python. Los tests se organizan en la carpeta `tests/` y se ejecutan de forma aislada utilizando transacciones que se revierten tras cada prueba.
+
+Siguiendo la arquitectura de carpetas detectada, los tests se centralizan para facilitar la ejecución en el contenedor de Docker.
 ```
-src/
-├── components/
-│   └── atoms/
-│       ├── BaseButton.vue
-│       └── BaseButton.test.ts  # Test del componente atómico
-├── composables/
-│   ├── useApi.ts               # Composable obligatorio 
-│   └── useApi.test.ts          # Test de lógica reactiva
-└── stores/
-    ├── counter.ts
-    └── counter.test.ts         # Test de estado de Pinia
+sCourseFlow_Backend/
+├── app/
+│   ├── models/          # Modelos de SQLAlchemy
+│   ├── routes/          # Blueprints de la API
+│   └── decorators.py    # Lógica de @require_role
+├── tests/               # Carpeta central de pruebas
+│   ├── conftest.py      # Fixtures globales (app, db, client, auth_headers)
+│   ├── test_auth.py     # Registro, Login y JWT
+│   ├── test_roles.py     # Jerarquía: User, Admin, Superadmin
+│   ├── test_courses.py  # CRUD de cursos (Admin)
+│   └── test_apps.py     # Solicitudes de inscripción
+└── pytest.ini           # Configuración de pytest
 ```
 
-### Tests E2E y Globales
+### Contextos de Prueba Obligatorios
 Todos los demás tests se organizan dentro de la carpeta `/tests/` en la raíz del proyecto.
 
 ```
@@ -40,27 +43,28 @@ proyecto/
 
 ## Contextos de Prueba Obligatorios
 
-Para cumplir con los criterios de rendimiento, los 5 tests deben cubrir:
+Para cumplir con los criterios de rendimiento del proyecto pedagógico, la suite de pruebas debe cubrir:
 
-* 1. **Renderizado de componentes:** Verificar que los datos de la API se visualicen correctamente en la interfaz.
+* 1. **Seguridad y Jerarquía (BE-02/BE-05):** Validar que un USER reciba un 403 Forbidden al intentar acceder a rutas de ADMIN o SUPERADMIN.
 
-* 2.   **Lógica de Composables:** Probar el funcionamiento del composable obligatorio.
+* 2.   **Autenticación (BE-01):** erificar el flujo de registro (evitando duplicados), login con generación de JWT y cierre de sesión con lista negra.
 
-* 3.  **Interactividad:** Validar comportamientos de selección, mostrar y ocultar elementos (`v-show`, `v-if`).
+* 3.  **Lógica de Negocio (BE-03):** Validar que la creación de cursos tenga fechas coherentes (end_date > start_date) y que el borrado sea lógico.
 
-* 4. **Gestión de Estado:** Pruebas sobre los estados de Pinia si se utiliza.
-
-* 5. **Operaciones CRUD:** Si se implementa Json-Server, probar la integración de Get, Post, Put o Delete.
+* 4. **Integridad de Datos (BE-04):** Asegurar que un usuario no pueda solicitar el mismo curso dos veces (Constraint Unique) y que pueda cancelar su propia solicitud.
 
 
+## Comandos para Ejecutar Tests
 
-## Comando para Ejecutar Tests
-
-Para asegurar que el código funciona sin bugs antes de la entrega:
+Para asegurar que el código funciona sin bugs antes de la entrega del 2 de junio:
 
 ```
-# Ejecutar suite de pruebas
-npm run test:unit
-# Ejecutar tests E2E (si se usa Cypress)
-npm run test:e2e
+# Ejecutar toda la suite de pruebas desde el contenedor
+docker compose exec backend pytest
+
+# Ejecutar con reporte de cobertura (Meta: >=70%)
+docker compose exec backend pytest --cov=app --cov-report=term-missing
+
+# Ejecutar un archivo específico
+docker compose exec backend pytest tests/test_roles.py
 ```

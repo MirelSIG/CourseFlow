@@ -15,7 +15,7 @@ CourseFlow_Backend/
 │      ├── structure.md             # Estructura del proyecto
 │      ├── testing.md             # Manual de pruebas
 │      ├── workflow.md            # Manual de flujo
-│      stories/                 # Historias de usuario
+│   ├── stories/                 # Historias de usuario
 │   ├── models/                 # Definición de la persistencia (BBDD)
 │   │   ├── __init__.py         # Exportación de modelos
 │   │   ├── application.py      # Tabla de inscripciones a cursos

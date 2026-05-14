@@ -1,44 +1,49 @@
 # workflow.md
 ## Principios
 
-*   **Agilidad y Autonomía:** El equipo trabaja como un grupo autónomo bajo el marco SCRUM.
+*   **Agilidad y Autonomía:** El equipo opera de forma autónoma bajo SCRUM, atendiendo ceremonias como Dailys, Sprint Planning y Sprint Retros.
 
-*    **Calidad Garantizada:** Ninguna funcionalidad se da por terminada sin superar sus tests correspondientes.
+*    **Calidad Garantizada:** Ninguna funcionalidad se considera terminada sin superar una cobertura mínima de tests (objetivo 70%) y validación de seguridad.
 
-*    **Colaboración Humano-IA:** Se utiliza un agente de IA de forma expresa y documentada para la planificación y soporte técnico.
+*    **Colaboración Humano-IA:** Se utiliza al agente de IA (Gemini) como experto técnico para la arquitectura, generación de tests y validación de lógica de negocio bajo parámetros SCRUM.
+
+* **Seguridad por Diseño:** Todo endpoint debe ser evaluado bajo la jerarquía de roles antes de su implementación.
 
 ## Proceso para una Historia de Usuario (HU)
 
 ### Análisis
 
-Leer la HU y sus **Criterios de Aceptación (CA)**. Identificar los **tests E2E** que validan cada CA.
-Estos tests los ha de planficar el agente, presentar al humano, y una vez que éste lo valide, realizarlos.
+Leer la HU y sus **Criterios de Aceptación (CA)**. Identificar los **tests E2E** necesarios para validar el flujo completo en el backend.
+
+*  **Acción del Agente:** Propone el plan de pruebas y los escenarios de seguridad (ej: probar acceso no autorizado).
+
+* **Acción del Humano:** Valida el plan de pruebas propuesto.
 
 ### Descomposición
-Dividir la HU en **Tareas** lógicas e implementables de forma independiente.
+- Dividir la HU en **Tareas Técnicas** independientes (ej: BE-07-T1, BE-07-T2).
 
-Esta descomposición la realiza el humano.
+- **Acción del Humano:** Realiza y prioriza esta descomposición en el backlog.
 
-### Ciclo por Tarea 
-El humano definirá cuando se ha de comenzar y dar por terminada una tarea.
+### Ciclo por Tarea (Sprints Técnicos) 
+El humano define el inicio y fin de cada tarea.
 
-a. **Análisis**: Entender qué funcionalidad concreta debe entregar esta tarea.
+a. **Análisis Técnico:**: Entender el impacto en la API y el modelo de datos (SQLAlchemy).
 
-b. **Diseño**: Decidir qué código y tests (unitarios/integración) se necesitan para la funcionalidad de *esta tarea*.
+b. **Diseño de Contratos:**: Definir el endpoint (verbo, ruta), el esquema JSON esperado y el nivel de rol requerido.
 
-c. **Validación del diseño**: El humano definirá si es válido el diseño propuesto, y podrá realizar modificaciones. Hasta que no lo valide, no se continuará con el siguiente paso.
+c. **Validación del Diseño:**: El humano valida el contrato de la API. No se escribe código sin esta aprobación.
 
 d. **Implementación:**
 
-     1. Crear/escribir código según `coding_style.md`.
-     2. Crear los **tests unitarios** (`.test.js`) co-localizados en la carpeta del componente o servicio.
-     3. Crear los **tests de integración** en `/tests/integration/` definidos en el plan.
-e. **Validación de los tests**: Ejecutar **solo los tests E2E relacionados con la tarea actual** para verificar que funciona y no rompe lo existente.
-f. **Validación final de la tarea**: El humano decide si la tarea es válida o hay que hacer cambios.
+     1. **Código:**: Escribir lógica en Flask siguiendo principios SOLID y nomenclatura en inglés.
+     2. **Tests Unitarios:**: CCrear pruebas para modelos o helpers de seguridad co-localizados o en tests/.
+     3. **Tests de Integración:**: Desarrollar los tests en la carpeta /tests/ utilizando las fixtures de conftest.py.
+e. **Ejecución y Debugging:**: Ejecutar pytest dentro del contenedor Docker para asegurar que la tarea cumple con los requisitos sin romper módulos previos.
+f. **Validación final de la tarea**: El humano revisa el código y los resultados de los tests para dar el visto bueno.
 
 ### Validación Final de la Historia de Usuario
 
-* **Tests E2E Completos:** Una vez completadas **todas** las tareas, ejecutar los **tests E2E completos** de la HU.
-* **Estado "Done":** La HU solo se considera **Done** cuando todos sus tests E2E pasan.
+* **Integración Total:** Ejecutar la suite completa de tests de la HU para verificar la persistencia en PostgreSQL y la correcta emisión de JWT.
+* **Estado "Done":** La HU se marca como terminada solo cuando los tests pasan y el código está documentado en el README.
 
-* **Presentación:** El resultado final se demuestra al cliente/formador en el Sprint Review.
+* **Sprint Review:** El equipo demuestra la funcionalidad al stakeholder (cliente) en un entorno funcional o mediante la demostración del código probado.
