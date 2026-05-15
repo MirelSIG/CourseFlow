@@ -160,6 +160,63 @@ Esto crea un nuevo archivo de migración en app/alembic/versions/.
 ¿Cómo aplicar migraciones?**
 alembic upgrade head
 Esto actualiza la base de datos al último estado definido por las migraciones.
+
+### Modelo Relacional de Datos
+
+El sistema utiliza un esquema relacional donde los **Usuarios** se inscriben en **Cursos** a través de **Solicitudes** (Applications). Además, existe una **Lista de Espera** para gestionar el cupo de los cursos cuando la capacidad se agota.
+
+#### Diagrama Entidad-Relación (ERD)
+
+```mermaid
+erDiagram
+    USERS ||--o{ APPLICATIONS : "realiza"
+    USERS ||--o{ WAITING_LIST : "está en"
+    COURSES ||--o{ APPLICATIONS : "recibe"
+    COURSES ||--o{ WAITING_LIST : "tiene"
+
+    USERS {
+        int id PK
+        string name
+        string email
+        string password
+        enum role "user, admin, superadmin"
+        datetime created_at
+        datetime updated_at
+    }
+    COURSES {
+        int id PK
+        string name
+        text description
+        date start_date
+        date end_date
+        int capacity
+        boolean is_active
+        datetime created_at
+        datetime updated_at
+    }
+    APPLICATIONS {
+        int id PK
+        int user_id FK
+        int course_id FK
+        enum status "pending, accepted, rejected, cancelled"
+        datetime created_at
+        datetime updated_at
+    }
+    WAITING_LIST {
+        int id PK
+        int user_id FK
+        int course_id FK
+        int position
+        datetime created_at
+    }
+```
+
+#### Descripción de las Relaciones
+
+*   **Usuarios <-> Solicitudes (1:N):** Un usuario puede tener múltiples solicitudes (una por curso), pero cada solicitud pertenece a un único usuario.
+*   **Cursos <-> Solicitudes (1:N):** Un curso puede recibir múltiples solicitudes de inscripción, pero cada solicitud está vinculada a un único curso.
+*   **Relación Muchos a Muchos (M:N):** Los usuarios y los cursos están relacionados indirectamente a través de la tabla `applications`, que actúa como tabla de unión con metadatos adicionales (el estado de la inscripción).
+*   **Lista de Espera:** Vincula usuarios con cursos cuando el cupo está lleno, manteniendo un orden secuencial mediante el campo `position`.
 5. Docker y docker-compose
 Levantar todo el backend:
 docker-compose up --build

@@ -11,13 +11,16 @@ router = APIRouter()
 def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
     exists = db.query(User).filter(User.email == user_in.email).first()
     if exists:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, 
+            detail="Email already registered"
+        )
 
     user = User(
         name=user_in.name,
         email=user_in.email,
         password=hash_password(user_in.password),
-        role="user",
+        role=user_in.role,
     )
     db.add(user)
     db.commit()

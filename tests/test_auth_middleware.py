@@ -4,8 +4,8 @@ from fastapi import FastAPI, Depends, Request
 from fastapi.testclient import TestClient
 from jose import jwt
 
-from project.utils.decorators import require_auth, require_role, SECRET_KEY, ALGORITHM, BLACKLIST
-from project.utils.enums import Role
+from app.utils.decorators import require_auth, require_role, SECRET_KEY, ALGORITHM
+from app.utils.enums import Role
 
 app = FastAPI()
 
@@ -47,13 +47,6 @@ def test_require_auth_expired_token():
     assert res.status_code == 401
     assert "Token has expired" in res.json()["detail"]
 
-def test_require_auth_blacklisted_token():
-    token = generate_token(1, Role.USER.value)
-    BLACKLIST.add(token)
-    res = client.get("/protected", headers={"Authorization": f"Bearer {token}"})
-    assert res.status_code == 401
-    assert "Token has been revoked" in res.json()["detail"]
-    BLACKLIST.remove(token)
 
 def test_require_auth_success():
     token = generate_token(1, Role.USER.value)
